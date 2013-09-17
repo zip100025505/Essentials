@@ -38,12 +38,12 @@ public class Commandunlimited extends EssentialsCommand
 		}
 		else if (args[0].equalsIgnoreCase("clear"))
 		{
-			final List<Integer> itemList = target.getUnlimited();
+			final List<Material> itemList = target.getUnlimited();
 
 			int index = 0;
 			while (itemList.size() > index)
 			{
-				final Integer item = itemList.get(index);
+				final Material item = itemList.get(index);
 				if (toggleUnlimited(user, target, item.toString()) == false)
 				{
 					index++;
@@ -61,19 +61,19 @@ public class Commandunlimited extends EssentialsCommand
 		final StringBuilder output = new StringBuilder();
 		output.append(_("unlimitedItems")).append(" ");
 		boolean first = true;
-		final List<Integer> items = target.getUnlimited();
+		final List<Material> items = target.getUnlimited();
 		if (items.isEmpty())
 		{
 			output.append(_("none"));
 		}
-		for (Integer integer : items)
+		for (Material integer : items)
 		{
 			if (!first)
 			{
 				output.append(", ");
 			}
 			first = false;
-			final String matname = Material.getMaterial(integer).toString().toLowerCase(Locale.ENGLISH).replace("_", "");
+			final String matname = integer.toString().toLowerCase(Locale.ENGLISH).replace("_", "");
 			output.append(matname);
 		}
 
@@ -89,7 +89,7 @@ public class Commandunlimited extends EssentialsCommand
 		if (ess.getSettings().permissionBasedItemSpawn()
 			&& (!user.isAuthorized("essentials.unlimited.item-all")
 				&& !user.isAuthorized("essentials.unlimited.item-" + itemname)
-				&& !user.isAuthorized("essentials.unlimited.item-" + stack.getTypeId())
+				&& !user.isAuthorized("essentials.unlimited.item-" + stack.getType())
 				&& !((stack.getType() == Material.WATER_BUCKET || stack.getType() == Material.LAVA_BUCKET)
 					 && user.isAuthorized("essentials.unlimited.item-bucket"))))
 		{

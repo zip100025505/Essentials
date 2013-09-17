@@ -2,6 +2,8 @@ package com.earth2me.essentials.antibuild;
 
 import java.util.List;
 import java.util.Map;
+
+import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
 
 
@@ -15,5 +17,5 @@ public interface IAntiBuild extends Plugin
 
 	Map<AntiBuildConfig, Boolean> getSettingsBoolean();
 
-	Map<AntiBuildConfig, List<Integer>> getSettingsList();
+	Map<AntiBuildConfig, List<Material>> getSettingsList();
 }

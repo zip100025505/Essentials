@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+
+import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -69,7 +71,8 @@ public class Commandclearinventory extends EssentialsCommand
 	protected void clearHandler(CommandSender sender, Player player, String[] args, int offset, boolean showExtended) throws Exception
 	{
 		short data = -1;
-		int type = -1;
+		Material type = null;
+        int returntype = -1;
 		int amount = -1;
 
 		if (args.length > (offset + 1) && NumberUtil.isInt(args[(offset + 1)]))
@@ -80,13 +83,14 @@ public class Commandclearinventory extends EssentialsCommand
 		{
 			if (args[offset].equalsIgnoreCase("**"))
 			{
-				type = -2;
+				returntype = -2;
 			}
 			else if (!args[offset].equalsIgnoreCase("*"))
 			{
 				final String[] split = args[offset].split(":");
 				final ItemStack item = ess.getItemDb().get(split[0]);
-				type = item.getTypeId();
+				type = item.getType();
+                returntype = 0;
 
 				if (split.length > 1 && NumberUtil.isInt(split[1]))
 				{
@@ -99,15 +103,15 @@ public class Commandclearinventory extends EssentialsCommand
 			}
 		}
 
-		if (type == -1) // type -1 represents wildcard or all items
-		{
+		if (returntype == -1) // type -1 represents wildcard or all items
+        {
 			if (showExtended)
 			{
 				sender.sendMessage(_("inventoryClearingAllItems", player.getDisplayName()));
 			}
 			player.getInventory().clear();
 		}
-		else if (type == -2) // type -2 represents double wildcard or all items and armor
+		else if (returntype == -2) // type -2 represents double wildcard or all items and armor
 		{
 			if (showExtended)
 			{
@@ -125,7 +129,7 @@ public class Commandclearinventory extends EssentialsCommand
 				{
 					sender.sendMessage(_("inventoryClearingAllStack", stack.getType().toString().toLowerCase(Locale.ENGLISH), player.getDisplayName()));
 				}
-				player.getInventory().clear(type, data);
+				player.getInventory().clear(type.getId(), data);
 			}
 			else if (amount == -1) // amount -1 means all items will be cleared
 			{

@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
@@ -218,7 +219,7 @@ public class User extends UserData implements Comparable<User>, IReplyTo, net.es
 	}
 
 	@Override
-	public Boolean canSpawnItem(final int itemId)
+	public Boolean canSpawnItem(final Material itemId)
 	{
 		return !ess.getSettings().itemSpawnBlacklist().contains(itemId);
 	}

@@ -8,6 +8,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.util.*;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -232,32 +233,37 @@ public abstract class UserData extends PlayerExtension implements IConf
 		config.setProperty("nickname", nick);
 		config.save();
 	}
-	private List<Integer> unlimited;
+	private List<Material> unlimited;
 
-	private List<Integer> _getUnlimited()
+	private List<Material> _getUnlimited()
 	{
-		return config.getIntegerList("unlimited");
+        List<Material> unlimited = new ArrayList<Material>();
+        for(String material : config.getStringList("unlimited"))
+        {
+            unlimited.add(Material.getMaterial(material));
+        }
+		return unlimited;
 	}
 
-	public List<Integer> getUnlimited()
+	public List<Material> getUnlimited()
 	{
 		return unlimited;
 	}
 
 	public boolean hasUnlimited(ItemStack stack)
 	{
-		return unlimited.contains(stack.getTypeId());
+		return unlimited.contains(stack.getType());
 	}
 
 	public void setUnlimited(ItemStack stack, boolean state)
 	{
-		if (unlimited.contains(stack.getTypeId()))
+		if (unlimited.contains(stack.getType()))
 		{
-			unlimited.remove(Integer.valueOf(stack.getTypeId()));
+			unlimited.remove(stack.getType());
 		}
 		if (state)
 		{
-			unlimited.add(stack.getTypeId());
+			unlimited.add(stack.getType());
 		}
 		config.setProperty("unlimited", unlimited);
 		config.save();
@@ -283,24 +289,24 @@ public abstract class UserData extends PlayerExtension implements IConf
 	@SuppressWarnings("unchecked")
 	public List<String> getPowertool(ItemStack stack)
 	{
-		return (List<String>)powertools.get("" + stack.getTypeId());
+		return (List<String>)powertools.get(stack.getType().toString());
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<String> getPowertool(int id)
+	public List<String> getPowertool(Material id)
 	{
-		return (List<String>)powertools.get("" + id);
+		return (List<String>)powertools.get(id.toString());
 	}
 
 	public void setPowertool(ItemStack stack, List<String> commandList)
 	{
 		if (commandList == null || commandList.isEmpty())
 		{
-			powertools.remove("" + stack.getTypeId());
+			powertools.remove(stack.getType().toString());
 		}
 		else
 		{
-			powertools.put("" + stack.getTypeId(), commandList);
+			powertools.put(stack.getType().toString(), commandList);
 		}
 		config.setProperty("powertools", powertools);
 		config.save();

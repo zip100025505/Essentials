@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import net.ess3.api.ITeleport;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -33,7 +34,7 @@ public interface IUser
 
 	boolean canAfford(BigDecimal value);
 
-	Boolean canSpawnItem(final int itemId);
+	Boolean canSpawnItem(final Material itemId);
 
 	void setLastLocation();
 

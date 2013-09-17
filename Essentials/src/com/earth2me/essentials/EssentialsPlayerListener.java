@@ -494,7 +494,7 @@ public class EssentialsPlayerListener implements Listener
 			{
 				final User user = ess.getUser(event.getPlayer());
 				user.updateActivity(true);
-				if (user.hasPowerTools() && user.arePowerToolsEnabled() && usePowertools(user, event.getItem().getTypeId()))
+				if (user.hasPowerTools() && user.arePowerToolsEnabled() && usePowertools(user, event.getItem().getType()))
 				{
 					event.setCancelled(true);
 				}
@@ -538,7 +538,7 @@ public class EssentialsPlayerListener implements Listener
 		}
 	}
 
-	private boolean usePowertools(final User user, final int id)
+	private boolean usePowertools(final User user, final Material id)
 	{
 		final List<String> commandList = user.getPowertool(id);
 		if (commandList == null || commandList.isEmpty())

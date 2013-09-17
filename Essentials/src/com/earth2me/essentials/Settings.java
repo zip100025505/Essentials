@@ -14,6 +14,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -520,17 +521,17 @@ public class Settings implements net.ess3.api.ISettings
 		economyLogUpdate = _isEcoLogUpdateEnabled();
 		economyDisabled = _isEcoDisabled();
 	}
-	private List<Integer> itemSpawnBl = new ArrayList<Integer>();
+	private List<Material> itemSpawnBl = new ArrayList<Material>();
 
 	@Override
-	public List<Integer> itemSpawnBlacklist()
+	public List<Material> itemSpawnBlacklist()
 	{
 		return itemSpawnBl;
 	}
 
-	private List<Integer> _getItemSpawnBlacklist()
+	private List<Material> _getItemSpawnBlacklist()
 	{
-		final List<Integer> epItemSpwn = new ArrayList<Integer>();
+		final List<Material> epItemSpwn = new ArrayList<Material>();
 		if (ess.getItemDb() == null)
 		{
 			logger.log(Level.FINE, "Aborting ItemSpawnBL read, itemDB not yet loaded.");
@@ -546,7 +547,7 @@ public class Settings implements net.ess3.api.ISettings
 			try
 			{
 				final ItemStack iStack = ess.getItemDb().get(itemName);
-				epItemSpwn.add(iStack.getTypeId());
+				epItemSpwn.add(iStack.getType());
 			}
 			catch (Exception ex)
 			{
@@ -647,7 +648,7 @@ public class Settings implements net.ess3.api.ISettings
 
 	// #easteregg
 	@Override
-	public boolean isTradeInStacks(int id)
+	public boolean isTradeInStacks(Material id)
 	{
 		return config.getBoolean("trade-in-stacks-" + id, false);
 	}
@@ -672,9 +673,9 @@ public class Settings implements net.ess3.api.ISettings
 	}
 
 	@Override
-	public List<Integer> getProtectList(final String configName)
+	public List<Material> getProtectList(final String configName)
 	{
-		final List<Integer> list = new ArrayList<Integer>();
+		final List<Material> list = new ArrayList<Material>();
 		for (String itemName : config.getString(configName, "").split(","))
 		{
 			itemName = itemName.trim();
@@ -686,7 +687,7 @@ public class Settings implements net.ess3.api.ISettings
 			try
 			{
 				itemStack = ess.getItemDb().get(itemName);
-				list.add(itemStack.getTypeId());
+				list.add(itemStack.getType());
 			}
 			catch (Exception ex)
 			{

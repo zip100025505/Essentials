@@ -4,6 +4,8 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+
+import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -13,7 +15,7 @@ public class EssentialsAntiBuild extends JavaPlugin implements IAntiBuild
 {
 	private static final Logger LOGGER = Logger.getLogger("Minecraft");
 	private final transient Map<AntiBuildConfig, Boolean> settingsBoolean = new EnumMap<AntiBuildConfig, Boolean>(AntiBuildConfig.class);
-	private final transient Map<AntiBuildConfig, List<Integer>> settingsList = new EnumMap<AntiBuildConfig, List<Integer>>(AntiBuildConfig.class);
+	private final transient Map<AntiBuildConfig, List<Material>> settingsList = new EnumMap<AntiBuildConfig, List<Material>>(AntiBuildConfig.class);
 	private transient EssentialsConnect ess = null;
 
 	@Override
@@ -34,7 +36,7 @@ public class EssentialsAntiBuild extends JavaPlugin implements IAntiBuild
 	@Override
 	public boolean checkProtectionItems(final AntiBuildConfig list, final int id)
 	{
-		final List<Integer> itemList = settingsList.get(list);
+		final List<Material> itemList = settingsList.get(list);
 		return itemList != null && !itemList.isEmpty() && itemList.contains(id);
 	}
 
@@ -51,7 +53,7 @@ public class EssentialsAntiBuild extends JavaPlugin implements IAntiBuild
 	}
 
 	@Override
-	public Map<AntiBuildConfig, List<Integer>> getSettingsList()
+	public Map<AntiBuildConfig, List<Material>> getSettingsList()
 	{
 		return settingsList;
 	}

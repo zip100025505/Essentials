@@ -36,9 +36,9 @@ public class Commandgive extends EssentialsCommand
 			&& (ess.getSettings().permissionBasedItemSpawn()
 				? (!ess.getUser(sender).isAuthorized("essentials.itemspawn.item-all")
 				   && !ess.getUser(sender).isAuthorized("essentials.itemspawn.item-" + itemname)
-				   && !ess.getUser(sender).isAuthorized("essentials.itemspawn.item-" + stack.getTypeId()))
+				   && !ess.getUser(sender).isAuthorized("essentials.itemspawn.item-" + stack.getType()))
 				: (!ess.getUser(sender).isAuthorized("essentials.itemspawn.exempt")
-				   && !ess.getUser(sender).canSpawnItem(stack.getTypeId()))))
+				   && !ess.getUser(sender).canSpawnItem(stack.getType()))))
 		{
 			throw new Exception(_("cantSpawnItem", itemname));
 		}

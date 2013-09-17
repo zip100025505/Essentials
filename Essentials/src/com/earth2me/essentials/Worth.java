@@ -37,19 +37,19 @@ public class Worth implements IConf
 		}
 		if (result.signum() < 0)
 		{
-			result = config.getBigDecimal("worth." + itemStack.getTypeId() + "." + itemStack.getDurability(), BigDecimal.ONE.negate());
+			result = config.getBigDecimal("worth." + itemStack.getType() + "." + itemStack.getDurability(), BigDecimal.ONE.negate());
 		}		
 		if (result.signum() < 0)
 		{
-			result = config.getBigDecimal("worth." + itemStack.getTypeId() + ".0", BigDecimal.ONE.negate());
+			result = config.getBigDecimal("worth." + itemStack.getType() + ".0", BigDecimal.ONE.negate());
 		}
 		if (result.signum() < 0)
 		{
-			result = config.getBigDecimal("worth." + itemStack.getTypeId(), BigDecimal.ONE.negate());
+			result = config.getBigDecimal("worth." + itemStack.getType(), BigDecimal.ONE.negate());
 		}		
 		if (result.signum() < 0)
 		{
-			result = config.getBigDecimal("worth-" + itemStack.getTypeId(), BigDecimal.ONE.negate());
+			result = config.getBigDecimal("worth-" + itemStack.getType(), BigDecimal.ONE.negate());
 		}
 		if (result.signum() < 0)
 		{
@@ -64,7 +64,7 @@ public class Worth implements IConf
 		{
 			throw new Exception(_("itemSellAir"));
 		}
-		int id = is.getTypeId();
+		Material id = is.getType();
 		int amount = 0;
 
 		if (args.length > 1)
@@ -140,7 +140,7 @@ public class Worth implements IConf
 			// Bukkit-bug: getDurability still contains the correct value, while getData().getData() is 0.
 			config.setProperty("worth." + itemStack.getType().toString().toLowerCase(Locale.ENGLISH).replace("_", "") + "." + itemStack.getDurability(), price);
 		}
-		config.removeProperty("worth-" + itemStack.getTypeId());
+		config.removeProperty("worth-" + itemStack.getType());
 		config.save();
 	}
 
