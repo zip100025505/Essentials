@@ -195,15 +195,19 @@ public class LocationUtil
 
 	public static Location getTarget(final LivingEntity entity) throws Exception
 	{
-        /* FIXME
-		final Block block = entity.getTargetBlock(TRANSPARENT_MATERIALS, 300);
+		HashSet<Byte> transparentMaterials= new HashSet<Byte>();
+
+		for (Material mat : TRANSPARENT_MATERIALS) //TODO: Remove this once bukkit implements a method
+		{
+			transparentMaterials.add((byte)mat.getId());
+		}
+
+		final Block block = entity.getTargetBlock(transparentMaterials, 300);
 		if (block == null)
 		{
 			throw new Exception("Not targeting a block");
 		}
 		return block.getLocation();
-		*/
-        throw new RuntimeException("Not Implemented");
 	}
 
 	static boolean isBlockAboveAir(final World world, final int x, final int y, final int z)
