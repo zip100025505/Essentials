@@ -1,5 +1,6 @@
 package com.earth2me.essentials;
 
+import com.earth2me.essentials.utils.NumberUtil;
 import net.ess3.api.IEssentials;
 import com.earth2me.essentials.utils.StringUtil;
 import static com.earth2me.essentials.I18n._;
@@ -791,6 +792,108 @@ public class EssentialsUpgrade
 		doneFile.save();
 	}
 
+    public void convertItemsCsvlTo162() {
+        if(doneFile.getBoolean("162-update", false))
+        {
+            return;
+        }
+
+        //Items.csv
+
+        File itemscsv = new File(ess.getDataFolder(), "items.csv");
+        if(itemscsv.exists()) {
+            BufferedReader reader = null;
+            BufferedWriter writer = null;
+            StringBuilder builder = new StringBuilder();
+            try
+            {
+                reader = new BufferedReader(new InputStreamReader(new FileInputStream(itemscsv)));
+                while(reader.ready())
+                {
+                    String line = reader.readLine();
+                    if(line.startsWith("#"))
+                    {
+                        builder.append(line).append("\n");
+                    }
+                    else
+                    {
+                        String[] parts = line.split(",");
+                        if(parts.length == 3)
+                        {
+                            String name = parts[0];
+                            int id;
+                            int data;
+
+                            if(NumberUtil.isInt(parts[1]))
+                            {
+                                id = Integer.parseInt(parts[1]);
+                            }
+                            else
+                            {
+                                continue; //Line with new standard... or new file... I guess
+                            }
+
+
+                            if(NumberUtil.isInt(parts[2]))
+                            {
+                                data = Integer.parseInt(parts[2]);
+                            }
+                            else
+                            {
+                                data = 0;
+                            }
+
+                            Material mat = Material.getMaterial(id);
+
+                            if(mat == null)
+                            {
+                                LOGGER.severe("Could not find a material for item " + id);
+                            }
+                            builder.append(name).append(",").append(mat.toString()).append(",").append(data).append("\n");
+                        }
+                    }
+                }
+
+                reader.close();
+                reader = null;
+
+                writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(itemscsv)));
+                writer.write(builder.toString());
+                writer.flush();
+
+                writer.close();
+                writer = null;
+
+            }
+            catch (Exception e)
+            {
+                LOGGER.log(Level.SEVERE, "Could not update items.csv", e);
+            }
+            finally
+            {
+                try
+                {
+                    if(reader != null)
+                    {
+                        reader.close();
+                    }
+                    if(writer != null)
+                    {
+                        writer.close();
+                    }
+                }
+                catch (Exception e)
+                {
+                    LOGGER.log(Level.SEVERE, "WatExceptionOccured", e);
+                }
+            }
+        }
+
+
+        doneFile.setProperty("162-update", true);
+        doneFile.save();
+    }
+
 	public void beforeSettings()
 	{
 		if (!ess.getDataFolder().exists())
@@ -800,6 +903,7 @@ public class EssentialsUpgrade
 		moveWorthValuesToWorthYml();
 		moveMotdRulesToFile("motd");
 		moveMotdRulesToFile("rules");
+        convertItemsCsvlTo162();
 	}
 
 	public void afterSettings()

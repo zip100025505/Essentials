@@ -43,19 +43,25 @@ public class ItemDb implements IConf, net.ess3.api.IItemDb
 
 		for (String line : lines)
 		{
-			line = line.trim().toLowerCase(Locale.ENGLISH);
+			line = line.trim();
 			if (line.length() > 0 && line.charAt(0) == '#')
 			{
 				continue;
 			}
 
-			final String[] parts = line.split("[^a-z0-9]");
+			final String[] parts = line.split(",");
 			if (parts.length < 2)
 			{
 				continue;
 			}
 
 			final Material numeric = Material.getMaterial(parts[1]);
+
+            if(numeric == null)
+            {
+                ess.getLogger().severe("Null for " + parts[1]);
+            }
+
 			final short data = parts.length > 2 && !parts[2].equals("0") ? Short.parseShort(parts[2]) : 0;
 			String itemName = parts[0].toLowerCase(Locale.ENGLISH);
 
@@ -101,7 +107,7 @@ public class ItemDb implements IConf, net.ess3.api.IItemDb
 		}
 		else if (NumberUtil.isInt(id))
 		{
-			itemid = Material.getMaterial(id);
+			itemid = Material.getMaterial(Integer.parseInt(id));
 		}
 		else if (id.matches("^[^:+',;.]+[:+',;.]\\d+$"))
 		{
@@ -255,7 +261,7 @@ public class ItemDb implements IConf, net.ess3.api.IItemDb
 		@Override
 		public int hashCode()
 		{
-			return (31 * itemType.hashCode()) ^ itemData;
+			return (itemType != null ? 31 * itemType.name().hashCode() : 0) ^ itemData;
 		}
 
 		@Override
